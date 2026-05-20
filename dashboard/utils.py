@@ -23,17 +23,44 @@ ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
 
 
+def _apply_streamlit_secrets() -> None:
+    """Streamlit Cloud inyecta Secrets en TOML → los copiamos a os.environ."""
+    try:
+        for key, value in st.secrets.items():
+            if isinstance(value, (str, int, float, bool)):
+                os.environ[str(key)] = str(value)
+    except Exception:
+        pass  # Sin secrets.toml local o fuera de Streamlit
+
+
+def _env(key: str, default: str | None = None) -> str | None:
+    _apply_streamlit_secrets()
+    return os.getenv(key, default)
+
+
+def _ssl_ca_path() -> str:
+    """Ruta al CA para TiDB; en la nube usa certifi si el path del .env no existe."""
+    path = _env("TIDB_SSL_CA", "/etc/ssl/cert.pem") or "/etc/ssl/cert.pem"
+    if Path(path).is_file():
+        return path
+    try:
+        import certifi
+        return certifi.where()
+    except ImportError:
+        return path
+
+
 def _connection_url() -> tuple[str, dict]:
     """Construye la URL SQLAlchemy según DATA_SOURCE."""
-    source = os.getenv("DATA_SOURCE", "local").lower()
+    source = (_env("DATA_SOURCE", "local") or "local").lower()
 
     if source == "tidb":
-        host = os.getenv("TIDB_HOST")
-        port = int(os.getenv("TIDB_PORT", "4000"))
-        user = os.getenv("TIDB_USER")
-        pwd = os.getenv("TIDB_PASS")
-        db = os.getenv("TIDB_DB")
-        ssl_ca = os.getenv("TIDB_SSL_CA", "/etc/ssl/cert.pem")
+        host = _env("TIDB_HOST")
+        port = int(_env("TIDB_PORT", "4000") or "4000")
+        user = _env("TIDB_USER")
+        pwd = _env("TIDB_PASS")
+        db = _env("TIDB_DB")
+        ssl_ca = _ssl_ca_path()
         if not all([host, user, pwd, db]):
             raise RuntimeError(
                 "DATA_SOURCE=tidb pero faltan variables TIDB_* en .env"
@@ -46,11 +73,11 @@ def _connection_url() -> tuple[str, dict]:
         return url, connect_args
 
     # local
-    host = os.getenv("MYSQL_HOST", "127.0.0.1")
-    port = int(os.getenv("MYSQL_PORT", "3306"))
-    user = os.getenv("MYSQL_USER", "root")
-    pwd = os.getenv("MYSQL_PASSWORD", "")
-    db = os.getenv("MYSQL_DATABASE", "emergencias")
+    host = _env("MYSQL_HOST", "127.0.0.1")
+    port = int(_env("MYSQL_PORT", "3306") or "3306")
+    user = _env("MYSQL_USER", "root")
+    pwd = _env("MYSQL_PASSWORD", "") or ""
+    db = _env("MYSQL_DATABASE", "emergencias")
     url = f"mysql+pymysql://{user}:{pwd}@{host}:{port}/{db}?charset=utf8mb4"
     return url, {}
 
@@ -71,17 +98,17 @@ def run_query(sql: str, params: dict | None = None) -> pd.DataFrame:
 
 def db_info() -> dict:
     """Devuelve metadatos del origen activo."""
-    source = os.getenv("DATA_SOURCE", "local").lower()
+    source = (_env("DATA_SOURCE", "local") or "local").lower()
     if source == "tidb":
         return {
             "source": "TiDB Cloud",
-            "host": os.getenv("TIDB_HOST"),
-            "db": os.getenv("TIDB_DB"),
+            "host": _env("TIDB_HOST"),
+            "db": _env("TIDB_DB"),
         }
     return {
         "source": "MySQL local",
-        "host": os.getenv("MYSQL_HOST", "127.0.0.1"),
-        "db": os.getenv("MYSQL_DATABASE", "emergencias"),
+        "host": _env("MYSQL_HOST", "127.0.0.1"),
+        "db": _env("MYSQL_DATABASE", "emergencias"),
     }
 
 

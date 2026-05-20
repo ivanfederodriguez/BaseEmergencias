@@ -143,9 +143,23 @@ Se abre en <http://localhost:8501>.
 1. Subir este repo a GitHub (sin el `.env` — ya está en `.gitignore`).
 2. Entrar a <https://share.streamlit.io> y conectar el repo.
 3. *Main file*: `dashboard/app.py`.
-4. *Advanced settings → Secrets*: pegar el contenido del `.env`
-   (Streamlit los expone como variables de entorno).
+4. *Advanced settings → Secrets*: pegar en formato **TOML** (no `.env`).
+   Ver plantilla: `dashboard/.streamlit/secrets.toml.example`
 5. Deploy.
+
+**Secrets en TOML** (ejemplo — reemplazá con tus valores reales):
+
+```toml
+DATA_SOURCE = "tidb"
+TIDB_HOST = "gateway01.us-west-2.prod.aws.tidbcloud.com"
+TIDB_PORT = 4000
+TIDB_USER = "299G1v2diSRStgb.root"
+TIDB_PASS = "tu_password"
+TIDB_DB = "emergencias"
+TIDB_SSL_CA = "/etc/ssl/certs/ca-certificates.crt"
+```
+
+Errores comunes: `KEY=value` (formato .env), comillas mal cerradas, o líneas vacías raras.
 
 > La app conecta a TiDB (porque está en internet); por eso `DATA_SOURCE=tidb` en Secrets.
 
