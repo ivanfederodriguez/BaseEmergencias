@@ -1,0 +1,20 @@
+# Secretos
+.env
+dashboard/.streamlit/secrets.toml
+
+# Dumps de la base (pueden ser pesados o sensibles)
+*.sql
+*.sql.gz
+*.dump
+!ejemplo.sql
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.python-version
+
+# Sistema
+.DS_Store
+*.log
