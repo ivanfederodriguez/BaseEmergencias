@@ -63,6 +63,10 @@ with st.sidebar:
         "% de daño (pondf)", min_value=0, max_value=100, value=(0, 100), step=5
     )
 
+    años_df = run_query("SELECT DISTINCT YEAR(fecha) as año FROM ddjj_personas WHERE fecha > '2000-01-01' ORDER BY año DESC")
+    años_list = [int(x) for x in años_df["año"].dropna().tolist()]
+    año_sel = st.multiselect("Año", años_list)
+
     fechas_df = run_query(
         "SELECT MIN(fecha) AS mn, MAX(fecha) AS mx FROM ddjj_personas WHERE fecha > '2000-01-01'"
     )
@@ -77,6 +81,7 @@ with st.sidebar:
     st.session_state["filtros"] = {
         "id_resolucion": res_id,
         "departamentos": dep_sel,
+        "años": año_sel,
         "pondf_min": pondf_min,
         "pondf_max": pondf_max,
         "f_desde": str(f_desde),
@@ -98,6 +103,13 @@ def where_filtros(prefix="dj.") -> tuple[str, dict]:
             placeholders.append(f":{k}")
             params[k] = d
         conds.append(f"{prefix}departamento IN ({','.join(placeholders)})")
+    if f.get("años"):
+        placeholders_a = []
+        for i, a in enumerate(f["años"]):
+            k = f"anio{i}"
+            placeholders_a.append(f":{k}")
+            params[k] = a
+        conds.append(f"YEAR({prefix}fecha) IN ({','.join(placeholders_a)})")
     conds.append(f"{prefix}pondf BETWEEN :p_min AND :p_max")
     params["p_min"] = f["pondf_min"]
     params["p_max"] = f["pondf_max"]
