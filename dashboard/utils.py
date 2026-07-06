@@ -38,6 +38,44 @@ def _env(key: str, default: str | None = None) -> str | None:
     return os.getenv(key, default)
 
 
+TABLES_ACTUAL = {
+    "resoluciones": "resoluciones",
+    "ddjj_personas": "ddjj_personas",
+    "productores": "productores",
+    "tipoactividad": "tipoactividad",
+    "agricultura": "agricultura",
+    "cultivos": "cultivos",
+    "cultivostipo": "cultivostipo",
+    "ganaderia_resumen": "bovinos",
+}
+
+TABLES_UNIFICADO = {
+    "resoluciones": "vw_all_resoluciones",
+    "ddjj_personas": "vw_all_ddjj_personas",
+    "productores": "vw_all_productores",
+    "tipoactividad": "vw_all_tipoactividad",
+    "agricultura": "vw_all_agricultura",
+    "cultivos": "vw_all_cultivos",
+    "cultivostipo": "vw_all_cultivostipo",
+    "ganaderia_resumen": "vw_all_ganaderia_resumen",
+}
+
+
+def data_mode() -> str:
+    """Modo de datos: actual mantiene tablas originales; unificado usa vw_all_*."""
+    mode = (_env("DATA_MODE", "actual") or "actual").lower()
+    return "unificado" if mode == "unificado" else "actual"
+
+
+def is_unified_mode() -> bool:
+    return data_mode() == "unificado"
+
+
+def table(name: str) -> str:
+    mapping = TABLES_UNIFICADO if is_unified_mode() else TABLES_ACTUAL
+    return mapping.get(name, name)
+
+
 def _ssl_ca_path() -> str:
     """Ruta al CA para TiDB; en la nube usa certifi si el path del .env no existe."""
     path = _env("TIDB_SSL_CA", "/etc/ssl/cert.pem") or "/etc/ssl/cert.pem"
@@ -104,11 +142,13 @@ def db_info() -> dict:
             "source": "TiDB Cloud",
             "host": _env("TIDB_HOST"),
             "db": _env("TIDB_DB"),
+            "mode": data_mode(),
         }
     return {
         "source": "MySQL local",
         "host": _env("MYSQL_HOST", "127.0.0.1"),
         "db": _env("MYSQL_DATABASE", "emergencias"),
+        "mode": data_mode(),
     }
 
 
@@ -147,6 +187,15 @@ def fix_coord(s) -> float | None:
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def list_resoluciones() -> pd.DataFrame:
+    if is_unified_mode():
+        return run_query(
+            """
+            SELECT resolucion_all_id AS id_resolucion,
+                   nombre_resolucion, numero_resolucion, fec_res, origen_dato
+            FROM vw_all_resoluciones
+            ORDER BY fec_res DESC
+            """
+        )
     return run_query(
         "SELECT id_resolucion, nombre_resolucion, numero_resolucion, fec_res "
         "FROM resoluciones ORDER BY fec_res DESC"
@@ -177,7 +226,7 @@ def list_rubros() -> pd.DataFrame:
 @st.cache_data(ttl=3600, show_spinner=False)
 def list_departamentos_ddjj() -> list[str]:
     df = run_query(
-        "SELECT DISTINCT departamento FROM ddjj_personas "
+        f"SELECT DISTINCT departamento FROM {table('ddjj_personas')} "
         "WHERE departamento <> '' ORDER BY departamento"
     )
     return df["departamento"].tolist()
@@ -188,6 +237,19 @@ def list_departamentos_ddjj() -> list[str]:
 
 @st.cache_data(ttl=600, show_spinner=False)
 def kpis_generales() -> dict:
+    if is_unified_mode():
+        df = run_query(
+            """
+            SELECT
+              (SELECT COUNT(*) FROM vw_all_productores) AS productores,
+              (SELECT COUNT(*) FROM vw_all_ddjj_personas) AS ddjj,
+              (SELECT COUNT(*) FROM vw_all_resoluciones) AS resoluciones,
+              (SELECT COUNT(*) FROM establecimientos) AS establecimientos,
+              (SELECT COUNT(*) FROM adremas) AS adremas,
+              (SELECT ROUND(AVG(pondf),2) FROM vw_all_ddjj_personas WHERE pondf>0) AS pondf_promedio
+            """
+        )
+        return df.iloc[0].to_dict()
     df = run_query(
         """
         SELECT

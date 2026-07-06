@@ -1,0 +1,39 @@
+﻿source_file,evento_id,dataset_role,relation_type,evento_nombre,anio_inicio,anio_fin,prioridad,comentario
+98-99.xlsx,DTO_1998_1999,parcial_mismo_nivel,consolidate_same_level,Emergencia DTO 1998 1999,1998,1999,1,Equivalente real de DTO 1998-1999.xlsx en data_raw; parte del evento 1998-1999
+DTO 1998.xlsx,DTO_1998_1999,parcial_mismo_nivel,consolidate_same_level,Emergencia DTO 1998 1999,1998,1999,2,Archivo principal indicado por el usuario; se agrupa con 98-99.xlsx como mismo evento
+DTO 2000-1171.xlsx,DTO_2000_1171,principal,standalone,Emergencia DTO 2000 1171,2000,2000,1,Clasificacion conservadora como evento independiente
+DTO 2001-133 AGRICOLAS.xlsx,DTO_2001_133,detalle_agricola,complementary_detail,Emergencia DTO 2001 133,2001,2001,1,Detalle agricola por cultivo de declaraciones N1-N20
+DTO 2001-133.xlsx,DTO_2001_133,principal,complementary_detail,Emergencia DTO 2001 133,2001,2001,2,Base principal de declaraciones juradas
+DTO 2001-134.xlsx,DTO_2001_134,principal,standalone,Emergencia DTO 2001 134,2001,2001,1,Clasificacion conservadora como evento independiente
+DTO 2002-130.xlsx,DTO_2002_130,principal,standalone,Emergencia DTO 2002 130,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-1612.xlsx,DTO_2002_1612,principal,standalone,Emergencia DTO 2002 1612,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-2883.xlsx,DTO_2002_2883,principal,standalone,Emergencia DTO 2002 2883,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-708-804-868.xlsx,DTO_2002_708_804_868,principal,standalone,Emergencia DTO 2002 708 804 868,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-805.xlsx,DTO_2002_805,principal,standalone,Emergencia DTO 2002 805,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-807.xlsx,DTO_2002_807,principal,standalone,Emergencia DTO 2002 807,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-809.xlsx,DTO_2002_809,principal,standalone,Emergencia DTO 2002 809,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-964.xlsx,DTO_2002_964,principal,standalone,Emergencia DTO 2002 964,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2002-_808.xlsx,DTO_2002_808,principal,standalone,Emergencia DTO 2002 808,2002,2002,1,Clasificacion conservadora como evento independiente
+DTO 2003-1349.xlsx,DTO_2003_1349,principal,standalone,Emergencia DTO 2003 1349,2003,2003,1,Clasificacion conservadora como evento independiente
+DTO 2003-2916.xlsx,DTO_2003_2916,principal,standalone,Emergencia DTO 2003 2916,2003,2003,1,Clasificacion conservadora como evento independiente
+DTO 2003-2917.xlsx,DTO_2003_2917,principal,standalone,Emergencia DTO 2003 2917,2003,2003,1,Clasificacion conservadora como evento independiente
+DTO 2003-842.xlsx,DTO_2003_842,principal,standalone,Emergencia DTO 2003 842,2003,2003,1,Clasificacion conservadora como evento independiente
+DTO 2005-401.xlsx,DTO_2005_401,principal,standalone,Emergencia DTO 2005 401,2005,2005,1,Clasificacion conservadora como evento independiente
+DTO 2006-1543.xlsx,DTO_2006_1543,principal,standalone,Emergencia DTO 2006 1543,2006,2006,1,Clasificacion conservadora como evento independiente
+DTO 2006-187.xlsx,DTO_2006_187,principal,standalone,Emergencia DTO 2006 187,2006,2006,1,Clasificacion conservadora como evento independiente
+DTO 2006-650.xlsx,DTO_2006_650,principal,standalone,Emergencia DTO 2006 650,2006,2006,1,Clasificacion conservadora como evento independiente
+DTO 2007- 464.xls,DTO_2007_464,principal,standalone,Emergencia DTO 2007 464,2007,2007,1,Clasificacion conservadora como evento independiente
+DTO 2007-1232.xlsx,DTO_2007_1232,principal,standalone,Emergencia DTO 2007 1232,2007,2007,1,Clasificacion conservadora como evento independiente
+DTO 2009-28.xlsx,DTO_2009_28,principal,standalone,Emergencia DTO 2009 28,2009,2009,1,Clasificacion conservadora como evento independiente
+DTO 2011-2601.xlsx,DTO_2011_2601,principal,standalone,Emergencia DTO 2011 2601,2011,2011,1,Clasificacion conservadora como evento independiente
+DTO 2012-1362.xlsx,DTO_2012_1362,principal,standalone,Emergencia DTO 2012 1362,2012,2012,1,Evento DTO 2012-1362 indicado explicitamente
+DTO 2012.xlsx,DTO_2012_GENERAL,principal,standalone,Emergencia DTO 2012 GENERAL,2012,2012,1,Evento general 2012 indicado explicitamente
+DTO 2013-1479.xlsx,DTO_2013_1479,principal,standalone,Emergencia DTO 2013 1479,2013,2013,1,Clasificacion conservadora como evento independiente
+DTO 2014-1965.xlsx,DTO_2014_1965,principal,standalone,Emergencia DTO 2014 1965,2014,2014,1,Clasificacion conservadora como evento independiente
+DTO 2015-55.xlsx,DTO_2015_55,principal,standalone,Emergencia DTO 2015 55,2015,2015,1,Clasificacion conservadora como evento independiente
+DTO 2016-01.xlsx,DTO_2016_01,principal,standalone,Emergencia DTO 2016 01,2016,2016,1,Clasificacion conservadora como evento independiente
+DTO 2016-1044.xlsx,DTO_2016_1044,principal,standalone,Emergencia DTO 2016 1044,2016,2016,1,Clasificacion conservadora como evento independiente
+DTO 2017-1104.xlsx,DTO_2017_1104,principal,standalone,Emergencia DTO 2017 1104,2017,2017,1,Clasificacion conservadora como evento independiente
+DTO 2017-235.xlsx,DTO_2017_235,principal,standalone,Emergencia DTO 2017 235,2017,2017,1,Clasificacion conservadora como evento independiente
+DTO 2018 - 763.xlsx,DTO_2018_763,principal,standalone,Emergencia DTO 2018 763,2018,2018,1,Clasificacion conservadora como evento independiente
+DTO 2019 - 32.xlsx,DTO_2019_32,principal,standalone,Emergencia DTO 2019 32,2019,2019,1,Clasificacion conservadora como evento independiente
